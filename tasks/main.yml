@@ -1,0 +1,17 @@
+---
+- name: include installation tasks
+  ansible.builtin.import_tasks: install.yml
+  tags: [networkmanager, networkmanager_install, install]
+
+- name: include configuration tasks
+  ansible.builtin.import_tasks: configure.yml
+  tags: [networkmanager, networkmanager_config, config]
+
+- name: include service tasks
+  ansible.builtin.import_tasks: service.yml
+  tags: [networkmanager, networkmanager_service, service]
+
+- name: include connection management tasks
+  ansible.builtin.import_tasks: manage_connections.yml
+  tags: [networkmanager, networkmanager_connections, networkmanager_config, config, connections]
+  when: networkmanager_service_state != 'stopped'

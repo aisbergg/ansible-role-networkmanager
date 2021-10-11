@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+{% macro render_section(values) %}
+{%   for key, value in values|dictsort() %}
+{%     if value is list %}
+{{ key }} = {{ value | join(', ') }}
+{%     elif value is boolean %}
+{{ key }} = {{ value | ternary('true', 'false') }}
+{%     else %}
+{{ key }} = {{ value }}
+{%     endif %}
+{%   endfor %}
+{% endmacro %}
+
+#
+# see NetworkManager.conf(5)
+#
+
+{% for section, options in cfg | dictsort() %}
+[{{ section }}]
+{{ render_section(options) }}
+{% endfor %}

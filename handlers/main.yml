@@ -1,0 +1,8 @@
+---
+- name: restart networkmanager
+  service:
+    name: "{{ __networkmanager_service_name }}"
+    state: restarted
+  when:
+    - networkmanager_service_restart_on_change | bool
+    - networkmanager_service_state != 'stopped'

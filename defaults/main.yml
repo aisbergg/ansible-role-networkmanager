@@ -1,0 +1,29 @@
+---
+# repository to use for installation
+networkmanager_debian_repo: "{{ ansible_distribution_release }}-backports"
+networkmanager_redhat_enablerepo: ""
+
+# enable or disable service
+networkmanager_service_enabled: true
+
+# service run state (started, stopped, restarted)
+networkmanager_service_state: started
+
+# restart service on configuration change
+networkmanager_service_restart_on_change: true
+
+# NetworkManager configuration
+networkmanager_conf: {}
+networkmanager_conf_d: {}
+
+# network connections
+# see https://docs.ansible.com/ansible/latest/collections/community/general/nmcli_module.html
+# example:
+#   networkmanager_connections:
+#     - conn_name: my-eth1
+#       ifname: eth1
+#       type: ethernet
+#       ip4: 192.0.2.100/24
+#       gw4: 192.0.2.1
+#       state: present
+networkmanager_connections: []

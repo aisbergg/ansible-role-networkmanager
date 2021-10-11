@@ -1,0 +1,29 @@
+---
+- name: create main NetworkManager configuration
+  ansible.builtin.template:
+    src: NetworkManager.conf.j2
+    dest: /etc/NetworkManager/NetworkManager.conf
+    owner: root
+    group: root
+    mode: 0644
+    trim_blocks: true
+    lstrip_blocks: true
+  notify: restart networkmanager
+  vars:
+    cfg: "{{ __networkmanager_config_defaults | combine(networkmanager_conf, recursive=True) }}"
+
+- name: create NetworkManager configurations in conf.d
+  ansible.builtin.template:
+    src: NetworkManager.conf.j2
+    dest: "/etc/NetworkManager/conf.d/{{ item.key }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+    trim_blocks: true
+    lstrip_blocks: true
+  notify: restart networkmanager
+  vars:
+    cfg: "{{ item.value }}"
+  loop: "{{ networkmanager_conf_d | default({}) | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"

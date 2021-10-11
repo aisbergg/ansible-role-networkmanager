@@ -1,0 +1,10 @@
+---
+# the name of the NetworkManager service
+__networkmanager_service_name: NetworkManager
+
+# https://man.archlinux.org/man/NetworkManager.conf.5.en
+__networkmanager_config_defaults:
+  main: {}
+  logging:
+    level: WARN
+    domains: ALL

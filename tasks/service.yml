@@ -1,0 +1,6 @@
+---
+- name: manage service
+  ansible.builtin.service:
+    name: "{{ __networkmanager_service_name }}"
+    state: "{{ networkmanager_service_state }}"
+    enabled: "{{ networkmanager_service_enabled }}"

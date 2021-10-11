@@ -1,0 +1,33 @@
+---
+- name: install NetworkManager requirements (Debian)
+  ansible.builtin.apt:
+    name:
+      - network-manager
+      - python3-dbus
+      - libnm0
+    state: present
+    default_release: "{{ (networkmanager_debian_repo | length > 0) | ternary(networkmanager_debian_repo, omit) }}"
+  when: ansible_os_family | lower == 'debian'
+
+- name: install NetworkManager requirements (RedHat)
+  ansible.builtin.yum:
+    name:
+      - NetworkManager
+      - NetworkManager-libnm
+      - python3-libsemanage
+      - python3-policycoreutils
+    state: present
+    enablerepo: "{{
+        (networkmanager_redhat_enablerepo | length > 0)
+        | ternary(networkmanager_redhat_enablerepo, omit)
+      }}"
+  when: ansible_os_family | lower == 'redhat'
+
+- name: install NetworkManager requirements (General)
+  ansible.builtin.package:
+    name:
+      - networkmanager
+    state: present
+  when:
+    - ansible_os_family | lower != 'debian'
+    - ansible_os_family | lower != 'redhat'
