@@ -7,7 +7,7 @@ galaxy_info:
   role_name: networkmanager
   description: Install and configure NetworkManager and manage network connections using nmcli on Linux systems.
   company: none
-  issue_tracker_url: https://github.com/Aisbergg/ansible-role-networkmanager/issues
+  issue_tracker_url: https://github.com/aisbergg/ansible-role-networkmanager/issues
   license: MIT
   min_ansible_version: 2.10
 
