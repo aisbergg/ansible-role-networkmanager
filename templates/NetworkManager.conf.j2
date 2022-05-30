@@ -3,8 +3,10 @@
 {%   for key, value in values|dictsort() %}
 {%     if value is list %}
 {{ key }} = {{ value | join(', ') }}
-{%     elif value is boolean %}
-{{ key }} = {{ value | ternary('true', 'false') }}
+{%     elif value in ['TRUE', 'True', 'true', 'yes', '1', 1, true] %}
+{{ key }} = true
+{%     elif value in ['FALSE', 'False', 'false', 'no', '0', 0, false] %}
+{{ key }} = false
 {%     else %}
 {{ key }} = {{ value }}
 {%     endif %}
