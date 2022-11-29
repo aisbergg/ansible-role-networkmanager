@@ -53,3 +53,52 @@
   loop: "{{ networkmanager_connections }}"
   loop_control:
     label: "{{ item.conn_name | default(ansible_default_ipv4.interface) }} to be {{ item.state | default('present') }}"
+  when: item.type != 'wireguard'
+
+- name: manage wireguard connections
+  community.general.nmcli:
+    wireguard:
+      fwmark: "{{ item.wireguard.fwmark | default(omit) }}"
+      listen-port: "{{ item.wireguard.listen_port | default(omit) }}"
+      ip4-auto-default-route: "{{ item.wireguard.ip4_auto_default_route | default(omit) }}"
+      ip6-auto-default-route: "{{ item.wireguard.ip6_auto_default_route | default(omit) }}"
+      mtu: "{{ item.wireguard.mtu | default(omit) }}"
+      peer-routes: "{{ item.wireguard.peer_routes | default(omit) }}"
+      private-key: "{{ item.wireguard.private_key | default(omit) }}"
+      private-key-flags: "{{ item.wireguard.private_key_flags | default(omit) }}"
+    autoconnect: "{{ item.autoconnect | default(omit) }}"
+    conn_name: "{{ item.conn_name }}"
+    dns4: "{{ item.dns4 | default(omit) }}"
+    dns4_search: "{{ item.dns4_search | default(omit) }}"
+    dns6: "{{ item.dns6 | default(omit) }}"
+    dns6_search: "{{ item.dns6_search | default(omit) }}"
+    gw4: "{{ item.gw4 | default(omit) }}"
+    gw6: "{{ item.gw6 | default(omit) }}"
+    ifname: "{{ item.ifname | default(omit) }}"
+    ip4: "{{ item.ip4 | default(omit) }}"
+    ip6: "{{ item.ip6 | default(omit) }}"
+    mac: "{{ item.mac | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+    mtu: "{{ item.mtu | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+    type: "{{ item.type }}"
+  notify: restart networkmanager
+  loop: "{{ networkmanager_connections }}"
+  loop_control:
+    label: "{{ item.conn_name | default(ansible_default_ipv4.interface) }} to be {{ item.state | default('present') }}"
+  when: item.type == 'wireguard'
+
+- name: Add wireguard peers
+  ansible.builtin.blockinfile:
+    path: "/etc/NetworkManager/system-connections/{{ item.conn_name }}.nmconnection"
+    insertbefore: '\[ipv4\]'
+    block: |
+      [wireguard-peer.{{ item.wireguard.public_key }}]
+      endpoint={{ item.wireguard.peer }}:{{ item.wireguard.peer_port }}
+      allowed-ips={{ item.wireguard.allowed_ips }};
+
+  notify: restart networkmanager
+  loop: "{{ networkmanager_connections }}"
+  loop_control:
+    label: "{{ item.conn_name | default(ansible_default_ipv4.interface) }} to be {{ item.state | default('present') }}"
+  when: item.type == 'wireguard'
