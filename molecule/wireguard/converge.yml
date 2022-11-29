@@ -1,0 +1,22 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    networkmanager_connections:
+      - conn_name: 'wg_test'
+        ifname: 'wg_test'
+        type: 'wireguard'
+        ip4: '10.42.43.2/32'
+        wireguard:
+          peer: 'wireguard.example.com'
+          peer_port: 51820
+          allowed_ips: '10.10.10.0/24'
+          private_key: 'gDdP5JHM6VQQOeGZPLANiTMa+V2bbwyR8Z2o86m7gUg='
+          public_key: 'KqOQG90uvqVWGHwLW+Z5tH019Qt5QcIhpKitIovkviA='
+        dns4: ['10.10.10.89']
+        dns4_search: 'svd.fdz.dezim-institut.de'
+  tasks:
+    - name: "Include ansible-role-networkmanager"
+      include_role:
+        name: "ansible-role-networkmanager"
