@@ -11,6 +11,9 @@
   ansible.builtin.import_tasks: service.yml
   tags: [networkmanager, networkmanager_service, service]
 
+- name: flush handlers
+  ansible.builtin.meta: flush_handlers
+
 - name: include connection management tasks
   ansible.builtin.import_tasks: manage_connections.yml
   tags: [networkmanager, networkmanager_connections, networkmanager_config, config, connections]

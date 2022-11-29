@@ -1,6 +1,7 @@
 ---
 - name: manage network connections
   community.general.nmcli:
+    addr_gen_mode6: "{{ item.addr_gen_mode6 | default(omit) }}"
     ageingtime: "{{ item.ageingtime | default(omit) }}"
     arp_interval: "{{ item.arp_interval | default(omit) }}"
     arp_ip_target: "{{ item.arp_ip_target | default(omit) }}"
@@ -8,48 +9,110 @@
     conn_name: "{{ conn_name }}"
     dhcp_client_id: "{{ item.dhcp_client_id | default(omit) }}"
     dns4: "{{ item.dns4 | default(omit) }}"
+    dns4_ignore_auto: "{{ item.dns4_ignore_auto | default(omit) }}"
     dns4_search: "{{ item.dns4_search | default(omit) }}"
     dns6: "{{ item.dns6 | default(omit) }}"
+    dns6_ignore_auto: "{{ item.dns6_ignore_auto | default(omit) }}"
     dns6_search: "{{ item.dns6_search | default(omit) }}"
     downdelay: "{{ item.downdelay | default(omit) }}"
     egress: "{{ item.egress | default(omit) }}"
     flags: "{{ item.flags | default(omit) }}"
     forwarddelay: "{{ item.forwarddelay | default(omit) }}"
-    gw4: "{{ item.gw4 | default(omit) }}"
+    gsm: "{{ item.gsm | default(omit) }}"
+    gw4: "{{ item.gw4 | default(omit) }}"  # noqa: args[module]
     gw6: "{{ item.gw6 | default(omit) }}"
     hairpin: "{{ item.hairpin | default(omit) }}"
     hellotime: "{{ item.hellotime | default(omit) }}"
     ifname: "{{ item.ifname | default(omit) }}"
+    ignore_unsupported_suboptions: "{{ item.ignore_unsupported_suboptions | default(omit) }}"
     ingress: "{{ item.ingress | default(omit) }}"
     ip4: "{{ item.ip4 | default(omit) }}"
     ip6: "{{ item.ip6 | default(omit) }}"
+    ip_privacy6: "{{ item.ip_privacy6 | default(omit) }}"
     ip_tunnel_dev: "{{ item.ip_tunnel_dev | default(omit) }}"
+    ip_tunnel_input_key: "{{ item.ip_tunnel_input_key | default(omit) }}"
     ip_tunnel_local: "{{ item.ip_tunnel_local | default(omit) }}"
+    ip_tunnel_output_key: "{{ item.ip_tunnel_output_key | default(omit) }}"
     ip_tunnel_remote: "{{ item.ip_tunnel_remote | default(omit) }}"
     mac: "{{ item.mac | default(omit) }}"
     master: "{{ item.master | default(omit) }}"
     maxage: "{{ item.maxage | default(omit) }}"
+    may_fail4: "{{ item.may_fail4 | default(omit) }}"
+    method4: "{{ item.method4 | default(omit) }}"
+    method6: "{{ item.method6 | default(omit) }}"
     miimon: "{{ item.miimon | default(omit) }}"
     mode: "{{ item.mode | default(omit) }}"
     mtu: "{{ item.mtu | default(omit) }}"
+    never_default4: "{{ item.never_default4 | default(omit) }}"
     path_cost: "{{ item.path_cost | default(omit) }}"
     primary: "{{ item.primary | default(omit) }}"
     priority: "{{ item.priority | default(omit) }}"
+    route_metric4: "{{ item.route_metric4 | default(omit) }}"
+    route_metric6: "{{ item.route_metric6 | default(omit) }}"
+    routes4: "{{ item.routes4 | default(omit) }}"
+    routes4_extended: "{{ item.routes4_extended | default(omit) }}"
+    routes6: "{{ item.routes6 | default(omit) }}"
+    routes6_extended: "{{ item.routes6_extended | default(omit) }}"
+    routing_rules4: "{{ item.routing_rules4 | default(omit) }}"
+    runner: "{{ item.runner | default(omit) }}"
+    runner_hwaddr_policy: "{{ item.runner_hwaddr_policy | default(omit) }}"
     slavepriority: "{{ item.slavepriority | default(omit) }}"
+    ssid: "{{ item.ssid | default(omit) }}"
     state: "{{ item.state | default('present') }}"
     stp: "{{ item.stp | default(omit) }}"
+    transport_mode: "{{ item.transport_mode | default(omit) }}"
     type: "{{ type }}"
     updelay: "{{ item.updelay | default(omit) }}"
     vlandev: "{{ item.vlandev | default(omit) }}"
     vlanid: "{{ item.vlanid | default(omit) }}"
+    vpn: "{{ item.vpn | default(omit) }}"
     vxlan_id: "{{ item.vxlan_id | default(omit) }}"
     vxlan_local: "{{ item.vxlan_local | default(omit) }}"
     vxlan_remote: "{{ item.vxlan_remote | default(omit) }}"
+    wifi: "{{ item.wifi | default(omit) }}"
+    wifi_sec: "{{ item.wifi_sec | default(omit) }}"
+    wireguard: "{{
+        {
+          'fwmark': item.wireguard['fwmark'] | default(omit),
+          'ip4-auto-default-route': item.wireguard['ip4-auto-default-route'] | default(omit),
+          'ip6-auto-default-route': item.wireguard['ip6-auto-default-route'] | default(omit),
+          'listen-port': item.wireguard['listen-port'] | default(omit),
+          'mtu': item.wireguard['mtu'] | default(omit),
+          'peer-routes ': item.wireguard['peer-routes'] | default(omit),
+          'private-key': item.wireguard['private-key'] | default(omit),
+          'private-key-flags': item.wireguard['private-key-flags'] | default(omit),
+          'xmit_hash_policy ': item.wireguard['xmit_hash_policy'] | default(omit),
+          'zone': item.wireguard['zone'] | default(omit),
+        } if item.wireguard is defined else omit
+      }}"
+    xmit_hash_policy: "{{ item.xmit_hash_policy | default(omit) }}"
+    zone: "{{ item.zone | default(omit) }}"
   vars:
     conn_name: "{{ item.conn_name | default(ansible_default_ipv4.interface) }}"
-    type: "{{ item.type if item.conn_name is defined else
-                'ethernet' if ansible_default_ipv4.type == 'ether' else generic }}"
+    type: "{{
+        item.type if item.conn_name is defined else
+        'ethernet' if ansible_default_ipv4.type == 'ether' else generic
+      }}"
   notify: restart networkmanager
   loop: "{{ networkmanager_connections }}"
   loop_control:
     label: "{{ item.conn_name | default(ansible_default_ipv4.interface) }} to be {{ item.state | default('present') }}"
+
+# wireguard peers currently cannot be configured via nmcli
+- name: configure wireguard peers
+  ansible.builtin.blockinfile:
+    path: "/etc/NetworkManager/system-connections/{{ item.conn_name }}.nmconnection"
+    insertbefore: '\[ipv4\]'
+    block: |
+      [wireguard-peer.{{ item.wireguard['public-key'] }}]
+      endpoint={{ item.wireguard.peer }}:{{ item.wireguard['peer-port'] }}
+      {% if item.wireguard['allowed-ips'] is defined %}
+      allowed-ips={{ item.wireguard['allowed-ips'] }};
+      {% endif %}
+  notify: restart networkmanager
+  loop: "{{ networkmanager_connections }}"
+  loop_control:
+    label: "{{ item.conn_name | default(ansible_default_ipv4.interface) }} to be {{ item.state | default('present') }}"
+  when:
+    - item.type == 'wireguard'
+    - item.wireguard is defined

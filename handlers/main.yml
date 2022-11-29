@@ -1,6 +1,6 @@
 ---
 - name: restart networkmanager
-  service:
+  ansible.builtin.service:
     name: "{{ __networkmanager_service_name }}"
     state: restarted
   when:

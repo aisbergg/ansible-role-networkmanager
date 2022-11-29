@@ -1,0 +1,37 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars:
+    conn_name: "wg_test"
+    ifname: "wg_test"
+    type: "wireguard"
+    ip4: "10.42.43.2/32"
+    wireguard:
+      peer: "wireguard.example.com"
+      peer-port: "51820"
+      allowed-ips: "10.10.10.0/24"
+      private-key: "gDdP5JHM6VQQOeGZPLANiTMa+V2bbwyR8Z2o86m7gUg="
+      public-key: "KqOQG90uvqVWGHwLW+Z5tH019Qt5QcIhpKitIovkviA="
+  become: true
+  become_user: root
+  tasks:
+    - name: read wireguard config
+      ansible.builtin.slurp:
+        src: "/etc/NetworkManager/system-connections/wg_test.nmconnection"
+      register: wg_config_encoded
+
+    - name: set wg config var
+      ansible.builtin.set_fact:
+        wg_config: "{{ wg_config_encoded.content | b64decode }}"
+
+    - name: check wireguard config
+      ansible.builtin.assert:
+        that:
+          - ifname in wg_config
+          - ip4 in wg_config
+          - wireguard['peer'] in wg_config
+          - wireguard['peer-port'] in wg_config
+          - wireguard['allowed-ips'] in wg_config
+          - wireguard['private-key'] in wg_config
+          - wireguard['public-key'] in wg_config

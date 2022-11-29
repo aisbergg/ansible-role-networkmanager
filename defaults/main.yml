@@ -3,6 +3,9 @@
 networkmanager_debian_repo: "{{ ansible_distribution_release }}-backports"
 networkmanager_redhat_enablerepo: ""
 
+# list of additional packages to be installed, e.g. wireguard
+networkmanager_extra_packages: []
+
 # enable or disable service
 networkmanager_service_enabled: true
 
