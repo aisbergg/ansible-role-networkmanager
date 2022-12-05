@@ -16,6 +16,8 @@
           public_key: 'KqOQG90uvqVWGHwLW+Z5tH019Qt5QcIhpKitIovkviA='
         dns4: ['10.10.10.89']
         dns4_search: 'svd.fdz.dezim-institut.de'
+    networkmanager_vpn_client_packages:
+      - wireguard-tools
   tasks:
     - name: "Include ansible-role-networkmanager"
       include_role:

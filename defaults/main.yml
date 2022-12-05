@@ -27,3 +27,5 @@ networkmanager_conf_d: {}
 #       gw4: 192.0.2.1
 #       state: present
 networkmanager_connections: []
+
+networkmanager_vpn_client_packages: []

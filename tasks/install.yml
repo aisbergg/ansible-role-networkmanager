@@ -31,3 +31,10 @@
   when:
     - ansible_os_family | lower != 'debian'
     - ansible_os_family | lower != 'redhat'
+
+- name: install vpn client packages
+  ansible.builtin.package:
+    name:
+      - "{{ item }}"
+    state: present
+  loop: "{{ networkmanager_vpn_client_packages }}"
