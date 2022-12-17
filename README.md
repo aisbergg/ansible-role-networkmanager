@@ -12,6 +12,7 @@ None.
 |----------|----------|----------|
 | `networkmanager_redhat_enablerepo` |  | Repository to enable while installing NetworkManager. Applies only to RedHat systems. |
 | `networkmanager_debian_repo` | `{{ ansible_distribution_release }}-backports` | Repository used for installation. Applies only to Debian systems. |
+| `networkmanager_extra_packages` | `[]` | List of additional packages to be installed, e.g. `wireguard`. |
 | `networkmanager_service_enabled` | `true` | Enable the NetworkManager service. |
 | `networkmanager_service_state` | `started` | Manage the state of the NetworkManager service</br>Choices: <ul><li>reloaded</li><li>restarted</li><li>started</li><li>stopped</li></ul> |
 | `networkmanager_service_restart_on_change` | `true` | Restart NetworkManager service on configuration changes. |
@@ -21,7 +22,7 @@ None.
 
 ## Dependencies
 
-None.
+Depends on `community.general` collection.
 
 ## Example Playbook
 
