@@ -2,9 +2,12 @@
 # see: https://ansible-lint.readthedocs.io/en/latest/default_rules.html
 skip_list:
   - name[casing]
+  - name[missing]
+  - name[template]
 
 # paths to be excluded from linting
 exclude_paths:
   - .cache/
   - .chglog/
   - .github/
+  - .tox/
