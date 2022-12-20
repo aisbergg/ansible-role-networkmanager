@@ -84,7 +84,7 @@
           'xmit_hash_policy ': item.wireguard['xmit_hash_policy'] | default(omit),
           'zone': item.wireguard['zone'] | default(omit),
         } if item.wireguard is defined else omit
-      }}"
+      }}"  # noqa: jinja[spacing]
     xmit_hash_policy: "{{ item.xmit_hash_policy | default(omit) }}"
     zone: "{{ item.zone | default(omit) }}"
   vars:
