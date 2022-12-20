@@ -1,7 +1,8 @@
 ---
 - name: Verify
   hosts: all
-  gather_facts: false
+  become: true
+
   vars:
     conn_name: "wg_test"
     ifname: "wg_test"
@@ -13,9 +14,18 @@
       allowed-ips: "10.10.10.0/24"
       private-key: "gDdP5JHM6VQQOeGZPLANiTMa+V2bbwyR8Z2o86m7gUg="
       public-key: "KqOQG90uvqVWGHwLW+Z5tH019Qt5QcIhpKitIovkviA="
-  become: true
-  become_user: root
+
   tasks:
+    - name: gather service facts
+      ansible.builtin.service_facts:
+
+    - name: check if NetworkManager service are enabled and running
+      ansible.builtin.assert:
+        that:
+          - "'NetworkManager.service' in ansible_facts.services"
+          - "ansible_facts.services['NetworkManager.service'].state == 'running'"
+          - "ansible_facts.services['NetworkManager.service'].status == 'enabled'"
+
     - name: read wireguard config
       ansible.builtin.slurp:
         src: "/etc/NetworkManager/system-connections/wg_test.nmconnection"

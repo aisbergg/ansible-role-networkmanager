@@ -9,7 +9,17 @@ driver:
 platforms:
   - name: molecule-networkmanager-debian11-$TOX_ENVNAME
     box: debian/bullseye64
-    memory: 512
+    memory: 384
+    cpus: 1
+
+  - name: molecule-networkmanager-rockylinux9-$TOX_ENVNAME
+    box: bento/rockylinux-9.1
+    memory: 384
+    cpus: 1
+
+  - name: molecule-networkmanager-archlinux-$TOX_ENVNAME
+    box: archlinux/archlinux
+    memory: 384
     cpus: 1
 provisioner:
   name: ansible
