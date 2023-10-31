@@ -17,7 +17,7 @@ None.
 | `networkmanager_service_state` | `started` | Manage the state of the NetworkManager service</br>Choices: <ul><li>reloaded</li><li>restarted</li><li>started</li><li>stopped</li></ul> |
 | `networkmanager_service_restart_on_change` | `true` | Restart NetworkManager service on configuration changes. |
 | `networkmanager_connections` | `[]` | List of network connections. The parameters can be looked up [here](https://docs.ansible.com/ansible/latest/collections/community/general/nmcli_module.html). |
-| `networkmanager_config` | `{}` | Main NetworkManager configuration. Available options can be found in the [NetworkManager.conf.5](https://man.archlinux.org/man/NetworkManager.conf.5.en) manpage. The options need to be provided as key-value pairs. See Example Section below for the correct syntax. |
+| `networkmanager_conf` | `{}` | Main NetworkManager configuration. Available options can be found in the [NetworkManager.conf.5](https://man.archlinux.org/man/NetworkManager.conf.5.en) manpage. The options need to be provided as key-value pairs. See Example Section below for the correct syntax. |
 | `networkmanager_conf_d` | `{}` | List of NetworkManager configurations, that will be put into the `conf.d/` directory. See Example Section below for the correct syntax. |
 
 ## Dependencies
@@ -33,7 +33,7 @@ Depends on `community.general` collection.
       networkmanager_service_enabled: true
       networkmanager_service_state: started
       
-      networkmanager_config:
+      networkmanager_conf:
         logging:
           level: WARN
           domains: ALL
