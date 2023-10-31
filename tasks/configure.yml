@@ -10,7 +10,7 @@
     lstrip_blocks: true
   notify: restart networkmanager
   vars:
-    cfg: "{{ __networkmanager_config_defaults | combine(networkmanager_conf, recursive=True) }}"
+    cfg: "{{ __networkmanager_config_defaults | combine(networkmanager_config, recursive=True) }}"
 
 - name: create NetworkManager configurations in conf.d
   ansible.builtin.template:

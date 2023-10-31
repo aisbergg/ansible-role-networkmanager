@@ -16,7 +16,7 @@ networkmanager_service_state: started
 networkmanager_service_restart_on_change: true
 
 # NetworkManager configuration
-networkmanager_conf: {}
+networkmanager_config: {}
 networkmanager_conf_d: {}
 
 # network connections
